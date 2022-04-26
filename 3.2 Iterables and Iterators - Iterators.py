@@ -327,3 +327,39 @@ calling __next__
 calling __next__
 As you can see, we first request an iterator from sq using the iter function, and then we iterate using the returned iterator. In the case of an iterator, the iter function just gets the iterator itself back.
 '''
+    
+#even though we do not have iter method, __gteitem__ can be used as iterable
+#first python searches for any iter method implemented, if not it checks for __getitem__
+class cities:
+    def __init__(self):
+        self._cities = ['New Delhi','New castle','New York']
+        
+    def __next__(self):
+        if self.index >= len(self._cities):
+            raise StopIteration
+        else:
+            item = self._cities[self.index]
+            self.index+=1
+            return item
+        
+    #def __iter__(self):
+       # return self
+        
+    def __getitem__(self,s):
+        print('__getitem__ called')
+        return self._cities[s]
+    
+c = cities()
+
+for item in c:
+    print(item)
+   
+ '''  
+__getitem__ called
+New Delhi
+__getitem__ called
+New castle
+__getitem__ called
+New York
+__getitem__ called
+'''
